@@ -1,0 +1,602 @@
+/* =========================================================
+   SETTINGS WORKSPACE
+   Theme-aware styling and responsive layout
+   ========================================================= */
+
+.settings-workspace {
+    --settings-surface: var(--card-background, var(--surface, #ffffff));
+    --settings-border: var(--border-color, var(--border, #dbe2ea));
+
+    --settings-text: var(--text-primary, var(--text, #172033));
+    --settings-muted: var(--text-muted, var(--text-secondary, #64748b));
+
+    --settings-accent: var(--accent, #475569);
+    --settings-accent-hover: var(--accent-hover, #334155);
+    --settings-icon-bg: var(--accent-soft, #f1f5f9);
+    --settings-focus: rgb(100 116 139 / 12%);
+    --settings-note-bg: var(--surface-soft, #f8fafc);
+
+    width: min(100%, 1080px);
+    margin: 0 auto;
+    padding: 34px clamp(18px, 3vw, 38px) 42px;
+
+    color: var(--settings-text);
+    box-sizing: border-box;
+}
+
+.settings-workspace *,
+.settings-workspace *::before,
+.settings-workspace *::after {
+    box-sizing: border-box;
+}
+
+.settings-workspace button:focus-visible {
+    outline: 2px solid var(--settings-accent);
+    outline-offset: 3px;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.settings-heading-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 26px;
+}
+
+.settings-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    color: var(--settings-muted);
+    font-size: 11px;
+    font-weight: 750;
+    letter-spacing: 0.09em;
+}
+
+.settings-heading-row h1 {
+    margin: 9px 0 7px;
+
+    color: var(--settings-text);
+    font-size: clamp(28px, 3vw, 36px);
+    letter-spacing: -0.04em;
+}
+
+.settings-subtitle,
+.settings-panel-body>p {
+    margin: 0;
+
+    color: var(--settings-muted);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* =========================================================
+   HEADER BUTTONS
+   ========================================================= */
+
+.settings-refresh-button,
+.settings-signout-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-shrink: 0;
+
+    min-height: 40px;
+    padding: 0 13px;
+
+    border: 1px solid var(--settings-border);
+    border-radius: 10px;
+
+    background: var(--settings-surface);
+    color: var(--settings-text);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        background 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease,
+        opacity 150ms ease;
+}
+
+.settings-refresh-button:hover:not(:disabled) {
+    border-color: var(--settings-accent);
+    background: var(--settings-note-bg);
+}
+
+.settings-refresh-button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.settings-signout-button {
+    border-color: #fecaca;
+    color: #b91c1c;
+}
+
+.settings-signout-button:hover:not(:disabled) {
+    background: #fff1f2;
+    border-color: #fca5a5;
+}
+
+.settings-signout-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   SETTINGS PANELS
+   ========================================================= */
+
+.settings-panel {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 17px;
+
+    padding: 23px;
+    margin-bottom: 15px;
+
+    border: 1px solid var(--settings-border);
+    border-radius: 16px;
+
+    background: var(--settings-surface);
+
+    box-shadow: 0 4px 18px rgb(15 23 42 / 3%);
+}
+
+.settings-panel-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 12px;
+
+    background: var(--settings-icon-bg);
+    color: var(--settings-accent);
+}
+
+.settings-panel-body {
+    min-width: 0;
+}
+
+.settings-panel-body h2 {
+    margin: 1px 0 6px;
+
+    color: var(--settings-text);
+    font-size: 17px;
+    letter-spacing: -0.02em;
+}
+
+.settings-panel-body>p {
+    margin-bottom: 17px;
+}
+
+/* =========================================================
+   THEME OPTIONS
+   ========================================================= */
+
+.settings-theme-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.settings-theme-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 0;
+    padding: 14px;
+
+    border: 1px solid var(--settings-border);
+    border-radius: 12px;
+
+    background: var(--settings-surface);
+    color: var(--settings-text);
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        border-color 150ms ease,
+        background 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.settings-theme-option:hover {
+    border-color: var(--settings-accent);
+    background: var(--settings-note-bg);
+}
+
+.settings-theme-option.selected {
+    border-color: var(--settings-accent);
+
+    box-shadow: 0 0 0 2px var(--settings-focus);
+
+    background: var(--settings-note-bg);
+}
+
+.settings-theme-option>span {
+    display: grid;
+    flex: 1;
+    gap: 3px;
+
+    min-width: 0;
+}
+
+.settings-theme-option strong {
+    color: var(--settings-text);
+    font-size: 13px;
+}
+
+.settings-theme-option small {
+    color: var(--settings-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.settings-help-text {
+    margin: 12px 0 0 !important;
+    font-size: 12px !important;
+}
+
+/* =========================================================
+   ACCOUNT AND SYSTEM DETAILS
+   ========================================================= */
+
+.settings-details {
+    display: grid;
+    gap: 0;
+
+    margin: 0;
+
+    border-top: 1px solid var(--settings-border);
+}
+
+.settings-details>div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    min-width: 0;
+    padding: 13px 0;
+
+    border-bottom: 1px solid var(--settings-border);
+}
+
+.settings-details dt,
+.settings-detail-label {
+    color: var(--settings-muted);
+    font-size: 13px;
+}
+
+.settings-details dd {
+    max-width: 70%;
+    margin: 0;
+
+    color: var(--settings-text);
+    overflow-wrap: anywhere;
+
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.settings-details code {
+    display: inline-block;
+
+    max-width: 65%;
+    overflow-wrap: anywhere;
+
+    color: var(--settings-text);
+    font-size: 12px;
+    text-align: right;
+}
+
+/* =========================================================
+   SECURITY NOTE
+   ========================================================= */
+
+.settings-security-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+
+    margin: 4px 0 16px;
+    padding: 12px;
+
+    border: 1px solid var(--settings-border);
+    border-radius: 10px;
+
+    background: var(--settings-note-bg);
+    color: var(--settings-muted);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.settings-security-note>svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* =========================================================
+   CONNECTION STATUS
+   ========================================================= */
+
+.settings-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.settings-status.is-online {
+    color: #15803d;
+}
+
+.settings-status.is-offline {
+    color: #b91c1c;
+}
+
+.settings-status.is-checking {
+    color: #a16207;
+}
+
+.settings-status-error {
+    margin: 12px 0 0 !important;
+
+    color: #b91c1c !important;
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+}
+
+/* =========================================================
+   FOOTER NOTE
+   ========================================================= */
+
+.settings-footer-note {
+    margin: 20px 0 0;
+
+    color: var(--settings-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   LOADING ANIMATION
+   ========================================================= */
+
+.settings-spin {
+    animation: settings-spin 1s linear infinite;
+}
+
+@keyframes settings-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   MIDNIGHT THEME
+   ========================================================= */
+
+.theme-midnight .settings-workspace,
+.app-shell.dark .settings-workspace {
+    --settings-surface: var(--card-background, var(--surface, #151d2b));
+    --settings-border: var(--border-color, var(--border, #2b3648));
+
+    --settings-text: var(--text-primary, var(--text, #e5eaf2));
+    --settings-muted: var(--text-muted, var(--text-secondary, #a4afc1));
+
+    --settings-accent: var(--accent, #a8beff);
+    --settings-accent-hover: var(--accent-hover, #c3d0ff);
+    --settings-icon-bg: var(--accent-soft, #222e40);
+    --settings-focus: rgb(140 169 214 / 18%);
+    --settings-note-bg: var(--surface-soft, #1b2636);
+}
+
+.theme-midnight .settings-theme-option,
+.app-shell.dark .settings-theme-option {
+    background: var(--settings-surface);
+    color: var(--settings-text);
+}
+
+.theme-midnight .settings-theme-option:hover,
+.theme-midnight .settings-theme-option.selected,
+.app-shell.dark .settings-theme-option:hover,
+.app-shell.dark .settings-theme-option.selected {
+    background: var(--settings-note-bg);
+}
+
+.theme-midnight .settings-security-note,
+.app-shell.dark .settings-security-note {
+    color: #b5c0d0;
+}
+
+.theme-midnight .settings-status.is-online,
+.app-shell.dark .settings-status.is-online {
+    color: #86e3ad;
+}
+
+.theme-midnight .settings-status.is-offline,
+.app-shell.dark .settings-status.is-offline {
+    color: #ffabb3;
+}
+
+.theme-midnight .settings-status.is-checking,
+.app-shell.dark .settings-status.is-checking {
+    color: #f2d08b;
+}
+
+.theme-midnight .settings-status-error,
+.app-shell.dark .settings-status-error {
+    color: #ffabb3 !important;
+}
+
+.theme-midnight .settings-signout-button,
+.app-shell.dark .settings-signout-button {
+    border-color: #7f3540;
+    background: #351f29;
+    color: #ffb9c0;
+}
+
+.theme-midnight .settings-signout-button:hover:not(:disabled),
+.app-shell.dark .settings-signout-button:hover:not(:disabled) {
+    border-color: #a54a57;
+    background: #44242e;
+}
+
+/* =========================================================
+   EMERALD THEME
+   ========================================================= */
+
+.theme-emerald .settings-workspace {
+    --settings-accent: var(--accent, #14856b);
+    --settings-accent-hover: var(--accent-hover, #0e6c56);
+    --settings-icon-bg: var(--accent-soft, #e3f7ef);
+    --settings-focus: rgb(20 133 107 / 14%);
+}
+
+/* =========================================================
+   AMETHYST THEME
+   ========================================================= */
+
+.theme-amethyst .settings-workspace {
+    --settings-accent: var(--accent, #8455c7);
+    --settings-accent-hover: var(--accent-hover, #7041b3);
+    --settings-icon-bg: var(--accent-soft, #f1eaff);
+    --settings-focus: rgb(132 85 199 / 14%);
+}
+
+/* =========================================================
+   MOBILE RESPONSIVENESS
+   ========================================================= */
+
+@media (max-width: 640px) {
+    .settings-workspace {
+        padding: 24px 15px 30px;
+    }
+
+    .settings-heading-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .settings-heading-row h1 {
+        font-size: 28px;
+    }
+
+    .settings-refresh-button {
+        align-self: flex-start;
+    }
+
+    .settings-panel {
+        grid-template-columns: 1fr;
+        gap: 12px;
+
+        padding: 18px;
+    }
+
+    .settings-panel-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .settings-theme-options {
+        grid-template-columns: 1fr;
+    }
+
+    .settings-details>div {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .settings-details dt,
+    .settings-detail-label {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .settings-details dd {
+        max-width: 62%;
+    }
+
+    .settings-details code {
+        max-width: 62%;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+    .settings-workspace {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .settings-panel {
+        padding: 15px;
+    }
+
+    .settings-theme-option {
+        padding: 12px;
+    }
+
+    .settings-details>div {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .settings-details dd {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .settings-details code {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .settings-status {
+        white-space: normal;
+    }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .settings-workspace *,
+    .settings-workspace *::before,
+    .settings-workspace *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

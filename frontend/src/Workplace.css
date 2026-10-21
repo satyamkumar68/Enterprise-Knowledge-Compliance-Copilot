@@ -1,0 +1,991 @@
+/* =========================================================
+   WORKPLACE DASHBOARD
+   Theme-aware styling and responsive layout
+   ========================================================= */
+
+.workplace-page {
+    --wp-accent: var(--accent, #4169dc);
+    --wp-accent-hover: var(--accent-hover, #3156c4);
+    --wp-accent-soft: var(--accent-soft, #edf2ff);
+    --wp-accent-border: var(--accent-border, #dce5ff);
+
+    --wp-surface: var(--card-bg, var(--surface, #ffffff));
+    --wp-muted: var(--surface-soft, #f7f8fc);
+    --wp-hover: var(--hover-bg, #f0f3fa);
+
+    --wp-text: var(--text-primary, #172033);
+    --wp-secondary: var(--text-secondary, #718096);
+    --wp-border: var(--border-color, #e5eaf3);
+
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 32px clamp(20px, 4vw, 48px) 48px;
+
+    color: var(--wp-text);
+    box-sizing: border-box;
+}
+
+.workplace-page *,
+.workplace-page *::before,
+.workplace-page *::after {
+    box-sizing: border-box;
+}
+
+.workplace-page button:focus-visible {
+    outline: 2px solid var(--wp-accent);
+    outline-offset: 3px;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.workplace-heading,
+.workplace-section-heading,
+.workplace-panel-heading,
+.workplace-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.workplace-heading {
+    margin-bottom: 26px;
+}
+
+.workplace-heading h1 {
+    margin: 7px 0 8px;
+
+    color: var(--wp-text);
+    font-size: clamp(25px, 3vw, 34px);
+    letter-spacing: -1.1px;
+}
+
+.workplace-heading p,
+.workplace-section-heading p,
+.workplace-panel-heading p {
+    margin: 0;
+
+    color: var(--wp-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.workplace-eyebrow {
+    color: var(--wp-accent);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+/* =========================================================
+   HEADER BUTTONS
+   ========================================================= */
+
+.workplace-refresh,
+.workplace-banner-button,
+.workplace-primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 40px;
+    border: 1px solid var(--wp-border);
+    border-radius: 10px;
+    padding: 10px 14px;
+
+    background: var(--wp-surface);
+    color: var(--wp-text);
+
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        transform 160ms ease,
+        opacity 160ms ease;
+}
+
+.workplace-refresh:hover:not(:disabled),
+.workplace-action:hover {
+    background: var(--wp-hover);
+}
+
+.workplace-refresh:active:not(:disabled),
+.workplace-banner-button:active:not(:disabled),
+.workplace-primary-button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.workplace-refresh:disabled,
+.workplace-banner-button:disabled,
+.workplace-primary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.workplace-spinning {
+    animation: workplace-spin 1s linear infinite;
+}
+
+@keyframes workplace-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   WELCOME BANNER
+   ========================================================= */
+
+.workplace-banner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 25px;
+    margin-bottom: 30px;
+
+    border: 1px solid var(--wp-accent-border);
+    border-radius: 18px;
+
+    background: linear-gradient(115deg,
+            var(--wp-accent-soft),
+            var(--wp-surface));
+}
+
+.workplace-banner-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: 54px;
+    height: 54px;
+
+    border-radius: 15px;
+
+    color: var(--wp-accent);
+    background: var(--wp-surface);
+
+    box-shadow: 0 5px 16px rgb(52 90 197 / 10%);
+}
+
+.workplace-banner-copy {
+    flex: 1;
+    min-width: 0;
+}
+
+.workplace-banner-copy h2 {
+    margin: 6px 0;
+
+    color: var(--wp-text);
+    font-size: clamp(18px, 2.3vw, 23px);
+    letter-spacing: -0.5px;
+}
+
+.workplace-banner-copy p {
+    max-width: 600px;
+    margin: 0;
+
+    color: var(--wp-secondary);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.workplace-banner-button,
+.workplace-primary-button {
+    flex-shrink: 0;
+
+    border-color: var(--wp-accent);
+    background: var(--wp-accent);
+    color: #ffffff;
+}
+
+.workplace-banner-button:hover:not(:disabled),
+.workplace-primary-button:hover:not(:disabled) {
+    border-color: var(--wp-accent-hover);
+    background: var(--wp-accent-hover);
+}
+
+/* =========================================================
+   SECTION HEADINGS
+   ========================================================= */
+
+.workplace-section-heading {
+    margin-bottom: 15px;
+}
+
+.workplace-section-heading h2,
+.workplace-panel-heading h2 {
+    margin: 0 0 4px;
+
+    color: var(--wp-text);
+    font-size: 17px;
+    letter-spacing: -0.3px;
+}
+
+.workplace-updated {
+    color: var(--wp-secondary);
+    font-size: 11px;
+}
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.workplace-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+
+    margin-bottom: 28px;
+}
+
+.workplace-stat-card,
+.workplace-panel {
+    min-width: 0;
+
+    border: 1px solid var(--wp-border);
+    border-radius: 15px;
+
+    background: var(--wp-surface);
+
+    box-shadow: 0 5px 20px rgb(23 32 51 / 3%);
+}
+
+.workplace-stat-card {
+    padding: 18px;
+}
+
+.workplace-stat-top {
+    align-items: flex-start;
+
+    color: var(--wp-secondary);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.workplace-stat-icon,
+.workplace-action-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    border-radius: 10px;
+}
+
+.workplace-stat-icon {
+    width: 37px;
+    height: 37px;
+}
+
+.workplace-stat-icon.blue,
+.workplace-action-icon.blue {
+    color: var(--wp-accent);
+    background: var(--wp-accent-soft);
+}
+
+.workplace-stat-icon.green,
+.workplace-action-icon.green {
+    color: #15966a;
+    background: #e8f8f1;
+}
+
+.workplace-stat-icon.amber {
+    color: #94600c;
+    background: #fff5df;
+}
+
+.workplace-stat-icon.red {
+    color: #b83f4b;
+    background: #fff0f1;
+}
+
+.workplace-stat-card>strong {
+    display: block;
+    margin: 16px 0 6px;
+
+    color: var(--wp-text);
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -1px;
+
+    overflow-wrap: anywhere;
+}
+
+.workplace-stat-card>p {
+    margin: 0;
+
+    color: var(--wp-secondary);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   MAIN CONTENT GRID
+   ========================================================= */
+
+.workplace-content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    align-items: start;
+    gap: 20px;
+}
+
+.workplace-panel {
+    overflow: hidden;
+}
+
+.workplace-panel-heading {
+    padding: 20px;
+
+    border-bottom: 1px solid var(--wp-border);
+}
+
+.workplace-text-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    border: 0;
+    padding: 7px 0 7px 8px;
+
+    background: transparent;
+    color: var(--wp-accent);
+
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.workplace-text-button:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   RECENT DOCUMENTS
+   ========================================================= */
+
+.workplace-document-list {
+    padding: 0 20px;
+}
+
+.workplace-document-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 0;
+    padding: 15px 0;
+
+    border-bottom: 1px solid var(--wp-border);
+}
+
+.workplace-document-row:last-child {
+    border-bottom: 0;
+}
+
+.workplace-document-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 42px;
+
+    border-radius: 9px;
+
+    color: var(--wp-accent);
+    background: var(--wp-accent-soft);
+}
+
+.workplace-document-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+
+    min-width: 0;
+}
+
+.workplace-document-info strong {
+    overflow: hidden;
+
+    color: var(--wp-text);
+    font-size: 12px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.workplace-document-info span {
+    color: var(--wp-secondary);
+    font-size: 10px;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   DOCUMENT STATUS
+   ========================================================= */
+
+.workplace-status {
+    flex-shrink: 0;
+    max-width: 120px;
+    overflow: hidden;
+
+    padding: 5px 8px;
+
+    border-radius: 20px;
+
+    background: var(--wp-muted);
+    color: var(--wp-secondary);
+
+    font-size: 9px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.workplace-status-indexed,
+.workplace-status-completed,
+.workplace-status-success {
+    color: #14835e;
+    background: #e8f8f1;
+}
+
+.workplace-status-failed,
+.workplace-status-error {
+    color: #b83f4b;
+    background: #fff0f1;
+}
+
+.workplace-status-processing,
+.workplace-status-pending,
+.workplace-status-uploaded {
+    color: #895b12;
+    background: #fff5df;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.workplace-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    padding: 34px 22px;
+
+    color: var(--wp-secondary);
+    text-align: center;
+    font-size: 12px;
+}
+
+.workplace-empty>svg {
+    color: var(--wp-accent);
+}
+
+.workplace-empty strong {
+    color: var(--wp-text);
+}
+
+.workplace-empty p {
+    max-width: 300px;
+    margin: 0;
+
+    line-height: 1.7;
+}
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.workplace-action-list {
+    padding: 8px 20px;
+}
+
+.workplace-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--wp-border);
+    padding: 15px 0;
+
+    background: transparent;
+    color: var(--wp-text);
+
+    text-align: left;
+    cursor: pointer;
+
+    transition: background 150ms ease;
+}
+
+.workplace-action:last-child {
+    border-bottom: 0;
+}
+
+.workplace-action-icon {
+    width: 42px;
+    height: 42px;
+}
+
+.workplace-action-icon.purple {
+    color: #7a54c5;
+    background: #f3edff;
+}
+
+.workplace-action>div:nth-child(2) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+
+    min-width: 0;
+}
+
+.workplace-action strong {
+    color: var(--wp-text);
+    font-size: 12px;
+}
+
+.workplace-action span {
+    color: var(--wp-secondary);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.workplace-action>svg {
+    flex-shrink: 0;
+    color: var(--wp-secondary);
+}
+
+/* =========================================================
+   SECURITY NOTE
+   ========================================================= */
+
+.workplace-security-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    margin: 8px 20px 20px;
+    padding: 13px;
+
+    border: 1px solid #d9f0e5;
+    border-radius: 11px;
+
+    background: #f0faf5;
+    color: #18805d;
+}
+
+.workplace-security-note>svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.workplace-security-note p {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    margin: 0;
+}
+
+.workplace-security-note strong {
+    font-size: 11px;
+}
+
+.workplace-security-note span {
+    color: #557c6b;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+
+.workplace-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    margin: 0 0 24px;
+    padding: 13px 15px;
+
+    border: 1px solid #f3c7cb;
+    border-radius: 10px;
+
+    background: #fff3f4;
+    color: #a63341;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.workplace-error>svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.workplace-error span {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.workplace-error button {
+    flex-shrink: 0;
+
+    border: 0;
+    background: transparent;
+    color: inherit;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   MIDNIGHT THEME
+   ========================================================= */
+
+.theme-midnight .workplace-page,
+.app-shell.dark .workplace-page {
+    --wp-surface: var(--card-bg, var(--surface, #1d2635));
+    --wp-muted: var(--surface-soft, #1d293b);
+    --wp-hover: var(--hover-bg, #263349);
+
+    --wp-text: var(--text-primary, #edf2ff);
+    --wp-secondary: var(--text-secondary, #b0bdd4);
+    --wp-border: var(--border-color, #303a4d);
+
+    --wp-accent: var(--accent, #a8beff);
+    --wp-accent-hover: var(--accent-hover, #c3d0ff);
+    --wp-accent-soft: var(--accent-soft, #293754);
+    --wp-accent-border: var(--accent-border, #3b4c70);
+}
+
+.theme-midnight .workplace-banner,
+.app-shell.dark .workplace-banner {
+    border-color: var(--wp-accent-border);
+    background: linear-gradient(115deg, #1d2b49, #202b40);
+}
+
+.theme-midnight .workplace-banner-icon,
+.app-shell.dark .workplace-banner-icon {
+    background: #293754;
+    color: #a8beff;
+}
+
+.theme-midnight .workplace-banner-copy h2,
+.app-shell.dark .workplace-banner-copy h2 {
+    color: #edf2ff;
+}
+
+.theme-midnight .workplace-banner-copy p,
+.app-shell.dark .workplace-banner-copy p {
+    color: #b0bdd4;
+}
+
+.theme-midnight .workplace-stat-card,
+.theme-midnight .workplace-panel,
+.app-shell.dark .workplace-stat-card,
+.app-shell.dark .workplace-panel {
+    border-color: var(--wp-border);
+    background: var(--wp-surface);
+}
+
+.theme-midnight .workplace-stat-icon.blue,
+.theme-midnight .workplace-action-icon.blue,
+.theme-midnight .workplace-document-icon,
+.app-shell.dark .workplace-stat-icon.blue,
+.app-shell.dark .workplace-action-icon.blue,
+.app-shell.dark .workplace-document-icon {
+    color: #bdcaff;
+    background: #293754;
+}
+
+.theme-midnight .workplace-stat-icon.green,
+.theme-midnight .workplace-action-icon.green,
+.app-shell.dark .workplace-stat-icon.green,
+.app-shell.dark .workplace-action-icon.green {
+    color: #8ce0b4;
+    background: #203f37;
+}
+
+.theme-midnight .workplace-stat-icon.amber,
+.app-shell.dark .workplace-stat-icon.amber {
+    color: #f2d08b;
+    background: #49391e;
+}
+
+.theme-midnight .workplace-stat-icon.red,
+.app-shell.dark .workplace-stat-icon.red {
+    color: #ffabb3;
+    background: #4b252d;
+}
+
+.theme-midnight .workplace-status-indexed,
+.theme-midnight .workplace-status-completed,
+.theme-midnight .workplace-status-success,
+.app-shell.dark .workplace-status-indexed,
+.app-shell.dark .workplace-status-completed,
+.app-shell.dark .workplace-status-success {
+    color: #91e5b9;
+    background: #1f4336;
+}
+
+.theme-midnight .workplace-status-failed,
+.theme-midnight .workplace-status-error,
+.app-shell.dark .workplace-status-failed,
+.app-shell.dark .workplace-status-error {
+    color: #ffabb3;
+    background: #4b252d;
+}
+
+.theme-midnight .workplace-status-processing,
+.theme-midnight .workplace-status-pending,
+.theme-midnight .workplace-status-uploaded,
+.app-shell.dark .workplace-status-processing,
+.app-shell.dark .workplace-status-pending,
+.app-shell.dark .workplace-status-uploaded {
+    color: #f2d08b;
+    background: #49391e;
+}
+
+.theme-midnight .workplace-action-icon.purple,
+.app-shell.dark .workplace-action-icon.purple {
+    color: #d0baff;
+    background: #382b52;
+}
+
+.theme-midnight .workplace-security-note,
+.app-shell.dark .workplace-security-note {
+    border-color: #285543;
+    background: #1b352c;
+    color: #a8e0c2;
+}
+
+.theme-midnight .workplace-security-note span,
+.app-shell.dark .workplace-security-note span {
+    color: #a8cdbb;
+}
+
+.theme-midnight .workplace-error,
+.app-shell.dark .workplace-error {
+    border-color: #693740;
+    background: #3a252b;
+    color: #ffb9c0;
+}
+
+/* =========================================================
+   EMERALD THEME
+   ========================================================= */
+
+.theme-emerald .workplace-page {
+    --wp-accent: var(--accent, #14856b);
+    --wp-accent-hover: var(--accent-hover, #0e6c56);
+    --wp-accent-soft: var(--accent-soft, #e3f7ef);
+    --wp-accent-border: var(--accent-border, #b6e6d3);
+}
+
+/* =========================================================
+   AMETHYST THEME
+   ========================================================= */
+
+.theme-amethyst .workplace-page {
+    --wp-accent: var(--accent, #8455c7);
+    --wp-accent-hover: var(--accent-hover, #7041b3);
+    --wp-accent-soft: var(--accent-soft, #f1eaff);
+    --wp-accent-border: var(--accent-border, #ddccfb);
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .workplace-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .workplace-content-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+    .workplace-page {
+        padding: 23px 16px 32px;
+    }
+
+    .workplace-heading {
+        align-items: flex-start;
+    }
+
+    .workplace-heading h1 {
+        font-size: 25px;
+        overflow-wrap: anywhere;
+    }
+
+    .workplace-refresh {
+        padding: 9px;
+        font-size: 0;
+    }
+
+    .workplace-refresh svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .workplace-banner {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 14px;
+        padding: 18px;
+    }
+
+    .workplace-banner-icon {
+        width: 45px;
+        height: 45px;
+    }
+
+    .workplace-banner-copy {
+        flex-basis: calc(100% - 60px);
+    }
+
+    .workplace-banner-button {
+        width: 100%;
+    }
+
+    .workplace-stat-grid {
+        gap: 10px;
+    }
+
+    .workplace-stat-card {
+        padding: 13px;
+    }
+
+    .workplace-stat-top {
+        align-items: center;
+        font-size: 10px;
+    }
+
+    .workplace-stat-icon {
+        width: 31px;
+        height: 31px;
+    }
+
+    .workplace-stat-card>strong {
+        font-size: 26px;
+    }
+
+    .workplace-stat-card>p {
+        font-size: 10px;
+    }
+
+    .workplace-section-heading {
+        align-items: flex-start;
+    }
+
+    .workplace-updated {
+        max-width: 110px;
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .workplace-panel-heading,
+    .workplace-document-list {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .workplace-action-list {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .workplace-security-note {
+        margin-right: 14px;
+        margin-left: 14px;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+    .workplace-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .workplace-stat-card {
+        padding: 11px;
+    }
+
+    .workplace-stat-top {
+        gap: 8px;
+    }
+
+    .workplace-stat-card>strong {
+        font-size: 24px;
+    }
+
+    .workplace-document-row {
+        gap: 9px;
+    }
+
+    .workplace-status {
+        max-width: 90px;
+        font-size: 8px;
+    }
+
+    .workplace-panel-heading {
+        gap: 8px;
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+
+    .workplace-panel-heading h2 {
+        font-size: 15px;
+    }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .workplace-page *,
+    .workplace-page *::before,
+    .workplace-page *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

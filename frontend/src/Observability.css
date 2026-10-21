@@ -1,0 +1,733 @@
+/* =========================================================
+   OBSERVABILITY DASHBOARD
+   Compatible with Light, Midnight, Emerald and Amethyst themes
+   ========================================================= */
+
+.observability-page {
+    --obs-accent: var(--accent, #5367d9);
+    --obs-accent-hover: var(--accent-hover, #4356c3);
+    --obs-accent-soft: var(--accent-soft, #edf2ff);
+    --obs-accent-border: var(--accent-border, #dbe5ff);
+
+    --obs-surface: var(--surface, #ffffff);
+    --obs-muted: var(--surface-soft, #f5f7fb);
+    --obs-hover: var(--surface-hover, #edf1f8);
+
+    --obs-text: var(--text, #172033);
+    --obs-secondary: var(--text-secondary, #667085);
+    --obs-subtle: var(--text-muted, #8993a7);
+    --obs-border: var(--border, #e1e5ed);
+
+    max-width: 1500px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 28px;
+
+    color: var(--obs-text);
+    box-sizing: border-box;
+}
+
+.observability-page *,
+.observability-page *::before,
+.observability-page *::after {
+    box-sizing: border-box;
+}
+
+.observability-page button:focus-visible,
+.observability-page select:focus-visible,
+.observability-page summary:focus-visible {
+    outline: 2px solid var(--obs-accent);
+    outline-offset: 3px;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.obs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+
+    margin-bottom: 20px;
+}
+
+.obs-eyebrow {
+    margin-bottom: 8px;
+
+    color: var(--obs-accent);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.obs-header h1 {
+    margin: 0;
+
+    color: var(--obs-text);
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 750;
+    letter-spacing: -0.7px;
+}
+
+.obs-header p,
+.obs-panel-header p {
+    margin: 8px 0 0;
+
+    color: var(--obs-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   REFRESH BUTTON
+   ========================================================= */
+
+.obs-refresh-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 40px;
+    padding: 10px 14px;
+
+    border: 1px solid var(--obs-border);
+    border-radius: 9px;
+
+    background: var(--obs-surface);
+    color: var(--obs-text);
+
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        color 0.2s,
+        opacity 0.2s;
+}
+
+.obs-refresh-button:hover:not(:disabled) {
+    border-color: var(--obs-accent-border);
+    background: var(--obs-hover);
+}
+
+.obs-refresh-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.obs-spinning {
+    animation: obs-rotate 1s linear infinite;
+}
+
+@keyframes obs-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   TIME WINDOW AND LAST UPDATED
+   ========================================================= */
+
+.obs-window-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.obs-window-label,
+.obs-updated {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    color: var(--obs-secondary);
+    font-size: 11px;
+}
+
+.obs-window-label {
+    font-weight: 700;
+}
+
+/* =========================================================
+   ERROR ALERT
+   ========================================================= */
+
+.obs-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 18px;
+    padding: 13px 15px;
+
+    border: 1px solid #efc4c4;
+    border-radius: 9px;
+
+    background: #fff2f2;
+    color: #a72c2c;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.obs-alert span {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.obs-alert button {
+    flex-shrink: 0;
+
+    border: 0;
+    background: transparent;
+    color: inherit;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.theme-midnight .obs-alert,
+.app-shell.dark .obs-alert {
+    border-color: #70404a;
+    background: #3b242c;
+    color: #ffb9bd;
+}
+
+/* =========================================================
+   LOADING STATE
+   ========================================================= */
+
+.obs-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: 240px;
+
+    color: var(--obs-secondary);
+    font-size: 13px;
+}
+
+/* =========================================================
+   METRICS GRID
+   ========================================================= */
+
+.obs-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+
+    margin-bottom: 24px;
+}
+
+.obs-metric-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    min-width: 0;
+    min-height: 155px;
+    padding: 18px;
+
+    border: 1px solid var(--obs-border);
+    border-radius: 12px;
+
+    background: var(--obs-surface);
+}
+
+.obs-metric-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+    margin-bottom: 14px;
+
+    border-radius: 9px;
+
+    background: var(--obs-accent-soft);
+    color: var(--obs-accent);
+}
+
+.obs-metric-icon.danger {
+    background: #fff0f0;
+    color: #bf3434;
+}
+
+.obs-metric-icon.warning {
+    background: #fff5df;
+    color: #9c6a0b;
+}
+
+.obs-metric-icon.accent {
+    background: #e8f6f5;
+    color: #237b75;
+}
+
+.theme-midnight .obs-metric-icon.danger,
+.app-shell.dark .obs-metric-icon.danger {
+    background: #3b242c;
+    color: #ffaaaa;
+}
+
+.theme-midnight .obs-metric-icon.warning,
+.app-shell.dark .obs-metric-icon.warning {
+    background: #40351f;
+    color: #f5d48a;
+}
+
+.theme-midnight .obs-metric-icon.accent,
+.app-shell.dark .obs-metric-icon.accent {
+    background: #193b3c;
+    color: #8adbd4;
+}
+
+.obs-metric-label {
+    color: var(--obs-secondary);
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.obs-metric-value {
+    margin-top: 9px;
+
+    color: var(--obs-text);
+    font-size: clamp(22px, 2.5vw, 29px);
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+
+    overflow-wrap: anywhere;
+}
+
+.obs-metric-description {
+    margin-top: 7px;
+
+    color: var(--obs-secondary);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   DASHBOARD PANELS
+   ========================================================= */
+
+.obs-panel {
+    min-width: 0;
+    margin-bottom: 24px;
+    padding: 22px;
+
+    border: 1px solid var(--obs-border);
+    border-radius: 13px;
+
+    background: var(--obs-surface);
+}
+
+.obs-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+
+    margin-bottom: 22px;
+}
+
+.obs-panel-header h2 {
+    margin: 0;
+
+    color: var(--obs-text);
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.obs-panel-header p {
+    font-size: 12px;
+}
+
+/* =========================================================
+   EVENT DISTRIBUTION
+   ========================================================= */
+
+.obs-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 19px;
+}
+
+.obs-distribution-row {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.obs-distribution-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--obs-text);
+    font-size: 12px;
+}
+
+.obs-distribution-label span {
+    overflow-wrap: anywhere;
+}
+
+.obs-distribution-label strong {
+    flex-shrink: 0;
+
+    color: var(--obs-secondary);
+    font-size: 11px;
+}
+
+.obs-bar-track {
+    height: 7px;
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: var(--obs-muted);
+}
+
+.obs-bar-fill {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: var(--obs-accent);
+
+    transition: width 0.3s ease;
+}
+
+/* =========================================================
+   EVENT FILTER
+   ========================================================= */
+
+.obs-events-header select {
+    min-height: 36px;
+    max-width: 100%;
+    padding: 7px 10px;
+
+    border: 1px solid var(--obs-border);
+    border-radius: 8px;
+
+    background: var(--obs-surface);
+    color: var(--obs-text);
+
+    font: inherit;
+    font-size: 12px;
+}
+
+.obs-events-header select:hover {
+    border-color: var(--obs-accent-border);
+}
+
+.obs-events-header select:focus {
+    border-color: var(--obs-accent);
+    outline: 2px solid var(--obs-accent-soft);
+    outline-offset: 1px;
+}
+
+/* =========================================================
+   EVENTS TABLE
+   ========================================================= */
+
+.obs-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+
+    border-radius: 8px;
+}
+
+.obs-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    color: var(--obs-text);
+    background: var(--obs-surface);
+
+    text-align: left;
+    font-size: 12px;
+}
+
+.obs-table th {
+    padding: 12px;
+
+    border-bottom: 1px solid var(--obs-border);
+
+    background: var(--obs-muted);
+    color: var(--obs-secondary);
+
+    font-size: 10px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.obs-table td {
+    padding: 14px 12px;
+
+    border-bottom: 1px solid var(--obs-border);
+
+    vertical-align: top;
+}
+
+.obs-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.obs-table tbody tr:hover {
+    background: var(--obs-muted);
+}
+
+.obs-event-name,
+.obs-event-id {
+    display: block;
+}
+
+.obs-event-name {
+    color: var(--obs-text);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.obs-event-id {
+    margin-top: 5px;
+
+    color: var(--obs-secondary);
+    font-size: 10px;
+    overflow-wrap: anywhere;
+}
+
+.obs-time-cell {
+    min-width: 145px;
+
+    color: var(--obs-secondary);
+    font-size: 11px;
+}
+
+/* =========================================================
+   EVENT SEVERITY BADGES
+   ========================================================= */
+
+.obs-severity {
+    display: inline-block;
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    font-size: 10px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.obs-severity-info {
+    background: var(--obs-accent-soft);
+    color: var(--obs-accent);
+}
+
+.obs-severity-warning {
+    background: #fff4dc;
+    color: #946200;
+}
+
+.obs-severity-error {
+    background: #fff0f0;
+    color: #b83232;
+}
+
+.theme-midnight .obs-severity-warning,
+.app-shell.dark .obs-severity-warning {
+    background: #40351f;
+    color: #f5d48a;
+}
+
+.theme-midnight .obs-severity-error,
+.app-shell.dark .obs-severity-error {
+    background: #3b242c;
+    color: #ffb9bd;
+}
+
+/* =========================================================
+   EXPANDABLE EVENT DETAILS
+   ========================================================= */
+
+.obs-details summary {
+    color: var(--obs-accent);
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.obs-details summary:hover {
+    color: var(--obs-accent-hover);
+}
+
+.obs-details pre {
+    max-width: 340px;
+    max-height: 240px;
+    overflow: auto;
+
+    margin-top: 10px;
+    padding: 10px;
+
+    border: 1px solid var(--obs-border);
+    border-radius: 7px;
+
+    background: var(--obs-muted);
+    color: var(--obs-text);
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    font-size: 10px;
+    line-height: 1.6;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.obs-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: 110px;
+    padding: 20px;
+
+    color: var(--obs-secondary);
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.obs-empty strong {
+    color: var(--obs-text);
+}
+
+/* =========================================================
+   DATA NOTE
+   ========================================================= */
+
+.obs-data-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+
+    margin: 0 0 20px;
+
+    color: var(--obs-secondary);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.obs-data-note svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--obs-accent);
+}
+
+/* =========================================================
+   TABLET LAYOUT
+   ========================================================= */
+
+@media (max-width: 1000px) {
+    .obs-metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* =========================================================
+   MOBILE LAYOUT
+   ========================================================= */
+
+@media (max-width: 600px) {
+    .observability-page {
+        padding: 16px;
+    }
+
+    .obs-header {
+        flex-direction: column;
+    }
+
+    .obs-refresh-button {
+        width: 100%;
+    }
+
+    .obs-metrics-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .obs-panel {
+        padding: 15px;
+    }
+
+    .obs-panel-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .obs-events-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .obs-events-header select {
+        width: 100%;
+    }
+
+    .obs-window-row {
+        align-items: flex-start;
+    }
+
+    .obs-table {
+        min-width: 650px;
+    }
+
+    .obs-details pre {
+        max-width: 100%;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY: REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .observability-page *,
+    .observability-page *::before,
+    .observability-page *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
