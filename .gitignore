@@ -51,8 +51,7 @@ yarn-error.log*
 Thumbs.db
 desktop.ini
 .idea/
-.vscode/*
-!.vscode/settings.json
+.vscode/
 
 # =========================================================
 # Logs
