@@ -158,19 +158,14 @@ enterprise-knowledge-copilot/
 │   │   └── Login.jsx                # Secure login screen
 │   ├── package.json                 # Frontend dependencies (React 19, Lucide icons, Vite)
 │   └── vite.config.js               # Vite build and dev server configuration
-├── tests/                           # 75 automated backend tests (100% pass rate)
+├── tests/                           # Automated backend test suite (46 tests, 100% pass rate)
 │   ├── test_answer.py               # Answer generation and citation formatting tests
 │   ├── test_api_auth.py             # Authentication and authorization endpoint tests
 │   ├── test_api_documents.py        # Document upload, listing, and permission tests
 │   ├── test_audit.py                # Security audit logging tests
-│   ├── test_bugfixes.py             # Regression tests for initial bug discoveries
+│   ├── test_bugfixes.py             # Regression tests for domain and edge-case bug fixes
 │   ├── test_chunking_quality.py     # Chunk overlap and contextual header tests
 │   ├── test_ingestion.py            # Document parsing and embedding pipeline tests
-│   ├── test_phase3.py               # Confidence scoring and structured sources tests
-│   ├── test_phase5.py               # Lifespan, health check, and timeout middleware tests
-│   ├── test_phase6.py               # LRU cache, fast JSON mode, and connection pool tests
-│   ├── test_phase7.py               # Server-Sent Events (SSE) streaming and parser tests
-│   ├── test_phase8.py               # Model keep-alive, residency, and fast profile tests
 │   ├── test_query_rewriter.py       # Query rewriting and fallback tests
 │   └── test_retriever.py            # Hybrid RRF and permission boundary tests
 ├── scripts/
@@ -178,9 +173,12 @@ enterprise-knowledge-copilot/
 │   ├── set_user_password.py         # CLI tool to configure username/password for session auth
 │   ├── run_answer_demo.py           # Interactive CLI question answering verification script
 │   └── run_retriever_demo.py        # Interactive CLI retrieval verification script
+├── migrations/
+│   ├── 001_auth_sessions.sql        # Auth sessions table and user password hash column migration
+│   └── 002_hnsw_index.sql           # HNSW cosine vector index migration for sub-15ms vector retrieval
 ├── data/
 │   └── sample_documents/            # Sample enterprise security and compliance documents
-├── improvement_plan.md              # Living engineering plan, bug reports, and benchmark metrics
+├── .env.example                     # Environment configuration template
 ├── requirements.txt                 # Pinned Python backend dependencies
 └── README.md                        # Project documentation (this file)
 ```
