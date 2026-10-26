@@ -80,10 +80,10 @@ graph TD
 - [x] Record exact hardware specs (CPU, GPU, RAM, Ollama version) in `eval/results/latency_benchmark.json`.
 
 ### Phase 4: Retrieval-Time RBAC Proof & Security Hardening (P1)
-- [ ] Confirm role filters are applied in SQL (`dp.principal_id = %s`), not in post-processing.
-- [ ] Create `tests/test_rbac_security.py` proving zero leakage even with high `top_k`.
-- [ ] Create `tests/test_prompt_injection.py` with 5 adversarial document fixtures.
-- [ ] Document auth, session, cookie flags, and CSRF patterns in `docs/SECURITY.md`.
+- [x] Confirm role filters are applied in SQL (`dp.principal_id = %s`), not in post-processing.
+- [x] Create `tests/test_rbac_security.py` proving zero leakage even with high `top_k`.
+- [x] Create `tests/test_prompt_injection.py` with 5 adversarial document fixtures.
+- [x] Document auth, session, cookie flags, and CSRF patterns in `docs/SECURITY.md`.
 
 ### Phase 5: Optional Cross-Encoder Reranker (P1)
 - [ ] Add optional cross-encoder reranker in `app/retrieval/reranker.py` behind `RERANKER_ENABLED`.
