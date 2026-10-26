@@ -90,10 +90,10 @@ graph TD
 - [x] Measure Recall vs Latency trade-off and document in `RESULTS.md`. Keep default OFF if latency penalty is high.
 
 ### Phase 6: Turnkey Dockerization & Multi-Environment Deployment (P0 & P2)
-- [ ] Create `Dockerfile` (multi-stage build for FastAPI backend and frontend).
-- [ ] Create `docker-compose.yml` that starts Postgres (with pgvector & initialized schema) and backend with one command.
-- [ ] Update `.env.example` with clear documentation of all variables.
-- [ ] Write `docs/DEPLOY.md` (Render / Railway / VPS deployment, hosted LLM toggle option).
+- [x] Create `Dockerfile` (multi-stage build for FastAPI backend and frontend).
+- [x] Create `docker-compose.yml` that starts Postgres (with pgvector & initialized schema) and backend with one command.
+- [x] Update `.env.example` with clear documentation of all variables.
+- [x] Write `docs/DEPLOY.md` (Render / Railway / VPS deployment, hosted LLM toggle option).
 
 ### Phase 7: GitHub Actions CI & Coverage (P1)
 - [ ] Create `.github/workflows/ci.yml`:

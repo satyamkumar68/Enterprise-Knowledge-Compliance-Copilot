@@ -961,3 +961,12 @@ def list_audit_events(
             status_code=503,
             detail="The audit service is temporarily unavailable.",
         ) from exc
+
+
+# Mount built frontend static files if dist directory exists (e.g. Docker container)
+frontend_dist = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
+if frontend_dist.is_dir():
+    from fastapi.staticfiles import StaticFiles
+
+    app.mount("/", StaticFiles(directory=str(frontend_dist), html=True), name="frontend")
+

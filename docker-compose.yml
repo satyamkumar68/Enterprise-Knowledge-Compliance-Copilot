@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: copilot_postgres
+    environment:
+      POSTGRES_USER: raguser
+      POSTGRES_PASSWORD: local_dev_password_change_me
+      POSTGRES_DB: knowledge_copilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./app/db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U raguser -d knowledge_copilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: copilot_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://raguser:local_dev_password_change_me@postgres:5432/knowledge_copilot
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      EMBEDDING_MODEL: nomic-embed-text
+      EMBEDDING_DIMENSION: 768
+      GENERATION_MODEL: qwen3:4b
+      FAST_GENERATION_MODEL: qwen2.5-coder:1.5b
+      GENERATION_NUM_PREDICT: 200
+      MODEL_PROFILE: standard
+      DEFAULT_TOP_K: 3
+      RELEVANCE_THRESHOLD: 0.50
+      RERANKER_ENABLED: "false"
+      RERANKER_TYPE: heuristic
+      COOKIE_SECURE: "false"
+      OLLAMA_KEEP_ALIVE: 30m
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  # Optional: Run Ollama inside Docker if you don't have host desktop Ollama running
+  # Launch with: docker compose --profile with-ollama up
+  ollama:
+    image: ollama/ollama:latest
+    container_name: copilot_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: 30m
+    profiles:
+      - with-ollama
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  ollama_models:
