@@ -96,12 +96,12 @@ graph TD
 - [x] Write `docs/DEPLOY.md` (Render / Railway / VPS deployment, hosted LLM toggle option).
 
 ### Phase 7: GitHub Actions CI & Coverage (P1)
-- [ ] Create `.github/workflows/ci.yml`:
+- [x] Create `.github/workflows/ci.yml`:
   - Linting check.
-  - 46+ unit tests + security tests.
-  - 10-question evaluation smoke test (mocked embeddings for CI speed).
-  - Docker build verification.
-- [ ] Add CI passing badge and test coverage report.
+  - 67 unit tests + RBAC security & prompt injection test suites.
+  - Evaluation smoke test with pgvector service container.
+  - Multi-stage Docker build verification.
+- [x] Add CI passing badge and test coverage configuration.
 
 ### Phase 8: Architecture, DECISIONS.md & Recruiter-Ready README (P0)
 - [ ] Write `docs/ARCHITECTURE.md` with complete Mermaid diagram and latency budget.
