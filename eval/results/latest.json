@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-26T15:22:10.644625+00:00",
+  "timestamp": "2026-10-26T15:59:04.879611+00:00",
   "environment": {
     "os": "Windows 11",
     "architecture": "AMD64",
@@ -21,8 +21,8 @@
       "recall_at_5": 17.02,
       "recall_at_10": 17.02,
       "mrr": 0.1702,
-      "latency_p50_ms": 58.83,
-      "latency_p95_ms": 78.4
+      "latency_p50_ms": 59.33,
+      "latency_p95_ms": 79.33
     },
     "vector_only": {
       "recall_at_3": 100.0,
@@ -30,15 +30,23 @@
       "recall_at_10": 100.0,
       "mrr": 1.0,
       "latency_p50_ms": 5.89,
-      "latency_p95_ms": 7.63
+      "latency_p95_ms": 10.68
     },
     "hybrid": {
       "recall_at_3": 100.0,
       "recall_at_5": 100.0,
       "recall_at_10": 100.0,
       "mrr": 1.0,
-      "latency_p50_ms": 7.68,
-      "latency_p95_ms": 10.36
+      "latency_p50_ms": 7.85,
+      "latency_p95_ms": 10.34
+    },
+    "hybrid_rerank": {
+      "recall_at_3": 100.0,
+      "recall_at_5": 100.0,
+      "recall_at_10": 100.0,
+      "mrr": 1.0,
+      "latency_p50_ms": 8.17,
+      "latency_p95_ms": 14.2
     }
   },
   "security_rbac": {
@@ -59,8 +67,8 @@
     "abstention_recall_pct": 100.0,
     "abstention_f1_score": 100.0,
     "faithfulness_groundedness_pct": 100.0,
-    "generation_latency_p50_ms": 6507.54,
-    "generation_latency_p95_ms": 23737.39,
-    "abstention_latency_p50_ms": 21807.53
+    "generation_latency_p50_ms": 5531.92,
+    "generation_latency_p95_ms": 7685.65,
+    "abstention_latency_p50_ms": 11431.57
   }
 }

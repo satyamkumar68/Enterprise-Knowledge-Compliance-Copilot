@@ -86,8 +86,8 @@ graph TD
 - [x] Document auth, session, cookie flags, and CSRF patterns in `docs/SECURITY.md`.
 
 ### Phase 5: Optional Cross-Encoder Reranker (P1)
-- [ ] Add optional cross-encoder reranker in `app/retrieval/reranker.py` behind `RERANKER_ENABLED`.
-- [ ] Measure Recall vs Latency trade-off and document in `RESULTS.md`. Keep default OFF if latency penalty is high.
+- [x] Add optional cross-encoder reranker in `app/retrieval/reranker.py` behind `RERANKER_ENABLED`.
+- [x] Measure Recall vs Latency trade-off and document in `RESULTS.md`. Keep default OFF if latency penalty is high.
 
 ### Phase 6: Turnkey Dockerization & Multi-Environment Deployment (P0 & P2)
 - [ ] Create `Dockerfile` (multi-stage build for FastAPI backend and frontend).

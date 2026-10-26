@@ -4,10 +4,11 @@ import threading
 import time
 
 from app.core.audit import log_audit_event
-from app.core.config import RELEVANCE_THRESHOLD
+from app.core.config import RELEVANCE_THRESHOLD, RERANKER_ENABLED
 from app.core.db_pool import get_connection
 from app.ingestion.embeddings import create_embedding
 from app.retrieval.query_rewriter import rewrite_query
+from app.retrieval.reranker import rerank_chunks
 
 
 logger = logging.getLogger(__name__)
@@ -82,6 +83,7 @@ def retrieve_chunks(
     max_distance: float | None = None,
     rewrite: bool | None = None,
     search_mode: str = "hybrid",
+    rerank: bool | None = None,
 ) -> list[dict]:
     """Retrieve chunks using hybrid vector similarity and full-text RRF search, or single mode."""
 
@@ -97,6 +99,8 @@ def retrieve_chunks(
         raise ValueError("top_k must be between 1 and 20.")
 
     clean_question = question.strip()
+    should_rerank = RERANKER_ENABLED if rerank is None else rerank
+    fetch_limit = min(20, top_k * 3) if should_rerank else top_k
 
     # Stage 0: Query rewriting / expansion
     search_query = rewrite_query(clean_question, enabled=rewrite)
@@ -146,7 +150,7 @@ def retrieve_chunks(
                 """
                 cur.execute(
                     vector_sql,
-                    (vector_literal, vector_literal, principal_id, top_k),
+                    (vector_literal, vector_literal, principal_id, fetch_limit),
                 )
                 rows = cur.fetchall()
 
@@ -176,7 +180,7 @@ def retrieve_chunks(
                         search_query,
                         principal_id,
                         search_query,
-                        top_k,
+                        fetch_limit,
                     ),
                 )
                 rows = cur.fetchall()
@@ -258,13 +262,13 @@ def retrieve_chunks(
                         vector_literal,
                         vector_literal,
                         principal_id,
-                        top_k,
+                        fetch_limit,
                         vector_literal,
                         search_query,
                         principal_id,
                         search_query,
-                        top_k,
-                        top_k,
+                        fetch_limit,
+                        fetch_limit,
                     ),
                 )
 
@@ -303,6 +307,12 @@ def retrieve_chunks(
         if len(row) > 5:
             item["score"] = float(row[5])
         results.append(item)
+
+    # Stage 3: Second-stage reranker (if enabled, re-scores and trims to top_k)
+    if should_rerank:
+        results = rerank_chunks(clean_question, results, top_k=top_k, enabled=True)
+    else:
+        results = results[:top_k]
 
     logger.info(
         "Total retrieval: %.3fs (returned=%d)",

@@ -49,6 +49,11 @@ OLLAMA_MAX_LOADED_MODELS = int(os.getenv("OLLAMA_MAX_LOADED_MODELS", "2"))
 FAST_GENERATION_MODEL = os.getenv("FAST_GENERATION_MODEL", "qwen2.5-coder:1.5b")
 MODEL_PROFILE = os.getenv("MODEL_PROFILE", "standard")
 
+# Optional cross-encoder / second-stage reranker (Phase 5)
+RERANKER_ENABLED = os.getenv("RERANKER_ENABLED", "false").lower() in ("true", "1", "yes")
+RERANKER_TYPE = os.getenv("RERANKER_TYPE", "heuristic")  # "heuristic", "ollama", or "cross_encoder"
+RERANKER_MODEL = os.getenv("RERANKER_MODEL", "qwen2.5-coder:1.5b")
+
 
 if not DATABASE_URL:
     raise RuntimeError("DATABASE_URL is not configured.")
