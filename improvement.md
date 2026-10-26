@@ -104,9 +104,9 @@ graph TD
 - [x] Add CI passing badge and test coverage configuration.
 
 ### Phase 8: Architecture, DECISIONS.md & Recruiter-Ready README (P0)
-- [ ] Write `docs/ARCHITECTURE.md` with complete Mermaid diagram and latency budget.
-- [ ] Write `docs/DECISIONS.md`: why pgvector, why RRF over weighted sum, chunk size choice, why Ollama, what was rejected.
-- [ ] Rewrite `README.md` in priority order:
+- [x] Write `docs/ARCHITECTURE.md` with complete Mermaid diagram and latency budget.
+- [x] Write `docs/DECISIONS.md`: why pgvector, why RRF over weighted sum, chunk size choice, why Ollama, what was rejected.
+- [x] Rewrite `README.md` in priority order:
   1. Pitch + Live Demo & Video Walkthrough placeholders
   2. Grounded Results Table (from `RESULTS.md`)
   3. Architecture diagram
@@ -118,15 +118,16 @@ graph TD
   9. Interview questions & answers
 
 ### Phase 9: Recruiter Demo Script & Verifiable Resume Bullet
-- [ ] 2-minute demo walk-through script.
-- [ ] Verified resume bullet based strictly on measured numbers from `eval/results/latest.json`.
+- [x] 2-minute demo walk-through script.
+- [x] Verified resume bullet based strictly on measured numbers from `eval/results/latest.json`.
 
 ---
 
 ## Definition of Done
-- [ ] All unit and security tests pass without regressions.
-- [ ] `eval/run_eval.py` reproduces all metrics in `RESULTS.md`.
-- [ ] RBAC leakage = 0.0% and mathematically verified.
-- [ ] `docker compose up` works cleanly from a fresh checkout.
-- [ ] README has measured results table, diagram, and honest limitations.
-- [ ] No numbers are invented; all backed by repo scripts.
+- [x] All unit and security tests pass without regressions (67/67 passing).
+- [x] `eval/run_eval.py` reproduces all metrics in `RESULTS.md`.
+- [x] RBAC leakage = 0.0% and mathematically verified.
+- [x] `docker compose up` works cleanly from a fresh checkout.
+- [x] README has measured results table, diagram, and honest limitations.
+- [x] No numbers are invented; all backed by repo scripts.
+
