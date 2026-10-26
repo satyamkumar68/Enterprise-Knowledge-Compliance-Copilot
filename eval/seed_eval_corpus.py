@@ -16,6 +16,7 @@ import psycopg
 
 from app.core.auth import generate_api_token, hash_token
 from app.core.config import DATABASE_URL
+from app.core.passwords import hash_password
 from app.ingestion.pipeline import ingest_document
 
 
@@ -46,8 +47,9 @@ DOCUMENTS = [
 
 
 def ensure_users_exist():
-    """Ensure test principals employee-001 and executive-001 exist in app_users."""
+    """Ensure test principals employee-001 and executive-001 exist in app_users with web login password."""
     principals = ["employee-001", "executive-001"]
+    pwd_hash = hash_password("password123456")
     with psycopg.connect(DATABASE_URL) as conn:
         with conn.cursor() as cur:
             for p in principals:
@@ -55,13 +57,14 @@ def ensure_users_exist():
                 token_hash = hash_token(token)
                 cur.execute(
                     """
-                    INSERT INTO app_users (principal_id, token_hash, is_active)
-                    VALUES (%s, %s, TRUE)
-                    ON CONFLICT (principal_id) DO NOTHING;
+                    INSERT INTO app_users (principal_id, token_hash, password_hash, is_active)
+                    VALUES (%s, %s, %s, TRUE)
+                    ON CONFLICT (principal_id) DO UPDATE
+                    SET password_hash = COALESCE(app_users.password_hash, EXCLUDED.password_hash);
                     """,
-                    (p, token_hash),
+                    (p, token_hash, pwd_hash),
                 )
-    print("Test users verified: employee-001, executive-001")
+    print("Test users verified: employee-001, executive-001 (Default password: password123456)")
 
 
 def seed_corpus():

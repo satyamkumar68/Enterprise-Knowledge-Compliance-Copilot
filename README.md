@@ -4,7 +4,8 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.143.0-009688.svg)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB.svg)](https://react.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%20%2B%20pgvector-336791.svg)](https://github.com/pgvector/pgvector)
-[![CI](https://img.shields.io/badge/CI-Passing%20(67%2F67%20Tests)-brightgreen.svg)]()
+[![CI](https://github.com/satyamkumar68/Enterprise-Knowledge-Compliance-Copilot/actions/workflows/ci.yml/badge.svg)](https://github.com/satyamkumar68/Enterprise-Knowledge-Compliance-Copilot/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![RBAC Leakage](https://img.shields.io/badge/RBAC%20Leakage-0.00%25%20(Proven)-success.svg)]()
 [![Recall@5](https://img.shields.io/badge/Hybrid%20Recall%405-100.0%25-brightgreen.svg)]()
 [![Streaming TTFT](https://img.shields.io/badge/Streaming%20TTFT-1.02s%20(94.5%25%20Reduction)-blue.svg)]()
@@ -13,12 +14,13 @@
 
 ---
 
-## 🎬 Live Demos & Walkthroughs
+## 🎬 Live Demos & Technical Resources
 
 - 🖥️ **Live Web Demo:** *[Interactive Deployment Demo](http://localhost:8000)*
-- 📹 **2-Minute Video Walkthrough:** *[Architecture & Retrieval RBAC Demo](https://youtu.be/placeholder)*
-- 📊 **Reproducible Benchmark Report:** [eval/results/RESULTS.md](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/eval/results/RESULTS.md)
-- ⚡ **Hardware Latency Benchmark:** [eval/results/latency_benchmark.json](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/eval/results/latency_benchmark.json)
+- 📑 **2-Minute Live Demo Script:** [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)
+- 📊 **Reproducible Benchmark Report:** [eval/results/RESULTS.md](eval/results/RESULTS.md)
+- ⚡ **Hardware Latency Benchmark:** [eval/results/latency_benchmark.json](eval/results/latency_benchmark.json)
+
 
 ---
 
@@ -102,7 +104,7 @@ flowchart TD
     SSE --> UI
 ```
 
-For complete technical specifications and data flow diagrams, see [docs/ARCHITECTURE.md](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/docs/ARCHITECTURE.md).
+For complete technical specifications and data flow diagrams, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
@@ -191,7 +193,7 @@ pytest -v
 
 ## 📐 Key Design Decisions & Trade-Offs
 
-Detailed Architectural Decision Records (ADRs) are documented in [docs/DECISIONS.md](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/docs/DECISIONS.md):
+Detailed Architectural Decision Records (ADRs) are documented in [docs/DECISIONS.md](docs/DECISIONS.md):
 
 - **ADR-001: Unified PostgreSQL + pgvector vs. Pinecone/Qdrant**: Chose PostgreSQL for ACID transactions across embeddings, permissions, and audit logs. Eliminated distributed sync lag.
 - **ADR-002: Reciprocal Rank Fusion (RRF) vs. Linear Weighted Sum**: Chose RRF ($k=60$) because dense cosine distances and BM25 scores have incompatible dynamic ranges. RRF is scale-invariant and parameter-free.
@@ -245,11 +247,12 @@ We implement 4 defense layers: (1) Document text is strictly encapsulated within
 
 ## 📚 Technical Documentation Index
 
-- [docs/ARCHITECTURE.md](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/docs/ARCHITECTURE.md) — Comprehensive technical diagrams, data flows, and latency budget.
-- [docs/DECISIONS.md](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/docs/DECISIONS.md) — Architectural Decision Records (ADRs) and trade-off rationales.
-- [docs/SECURITY.md](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/docs/SECURITY.md) — Threat model, RBAC proofs, CSRF, and prompt injection defenses.
-- [docs/DEPLOY.md](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/docs/DEPLOY.md) — Production deployment guide (Docker Compose, VPS, Caddy SSL, Cloud PaaS).
-- [eval/results/RESULTS.md](file:///c:/Users/Satyam%20Kumar/enterprise-knowledge-copilot/eval/results/RESULTS.md) — Grounded 68-question benchmark evaluation results.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Comprehensive technical diagrams, data flows, and latency budget.
+- [docs/DECISIONS.md](docs/DECISIONS.md) — Architectural Decision Records (ADRs) and trade-off rationales.
+- [docs/SECURITY.md](docs/SECURITY.md) — Threat model, RBAC proofs, CSRF, and prompt injection defenses.
+- [docs/DEPLOY.md](docs/DEPLOY.md) — Production deployment guide (Docker Compose, VPS, Caddy SSL, Cloud PaaS).
+- [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) — 2-minute live demo walkthrough script and verifiable resume bullets.
+- [eval/results/RESULTS.md](eval/results/RESULTS.md) — Grounded 68-question benchmark evaluation results.
 
 ---
 
