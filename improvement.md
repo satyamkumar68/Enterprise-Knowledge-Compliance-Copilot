@@ -73,11 +73,11 @@ graph TD
 - [x] Add `make eval` / `scripts/eval.bat` one-command runner.
 
 ### Phase 3: Hardware-Grounded Latency & TTFT Benchmark (P0)
-- [ ] Build `eval/bench_ttft.py` to measure streaming Time-to-First-Token.
-- [ ] Measure across configurations:
+- [x] Build `eval/bench_ttft.py` to measure streaming Time-to-First-Token.
+- [x] Measure across configurations:
   - Cold vs Warm vs LRU Cache Hit (<1ms)
   - Standard Profile (`qwen3:4b`) vs Fast Profile (`qwen2.5-coder:1.5b`)
-- [ ] Record exact hardware specs (CPU, GPU, RAM, Ollama version) in `eval/results/latency_benchmark.json`.
+- [x] Record exact hardware specs (CPU, GPU, RAM, Ollama version) in `eval/results/latency_benchmark.json`.
 
 ### Phase 4: Retrieval-Time RBAC Proof & Security Hardening (P1)
 - [ ] Confirm role filters are applied in SQL (`dp.principal_id = %s`), not in post-processing.

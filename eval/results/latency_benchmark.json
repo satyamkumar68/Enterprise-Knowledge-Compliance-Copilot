@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-10-26T15:36:33.030160+00:00",
+  "hardware": {
+    "os": "Windows 11",
+    "architecture": "AMD64",
+    "processor": "Intel64 Family 6 Model 154 Stepping 4, GenuineIntel",
+    "python_version": "3.14.5",
+    "standard_model": "qwen3:4b",
+    "fast_model": "qwen2.5-coder:1.5b",
+    "embedding_model": "nomic-embed-text"
+  },
+  "embedding_cache": {
+    "cold_embedding_ms": 2515.18,
+    "cached_embedding_p50_ms": 0.004,
+    "cache_speedup_factor": 628809.4
+  },
+  "streaming_benchmarks": {
+    "unoptimized_sync_p50_ms": 18766.31,
+    "standard_profile": {
+      "model": "qwen3:4b",
+      "ttft_p50_ms": 1023.43,
+      "ttft_p95_ms": 1141.16,
+      "total_p50_ms": 6024.07
+    },
+    "fast_profile": {
+      "model": "qwen2.5-coder:1.5b",
+      "ttft_p50_ms": 6047.15,
+      "ttft_p95_ms": 12906.88,
+      "total_p50_ms": 8171.07
+    },
+    "perceived_latency_reduction_pct": 94.5
+  }
+}
