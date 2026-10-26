@@ -17,7 +17,6 @@
 ## 🚀 Interactive Demo & Technical Resources
 
 - 🖥️ **Interactive Web Application:** *[Local Deployment](http://localhost:8000)*
-- 📑 **2-Minute Live Demonstration Script:** [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)
 - 📊 **Reproducible Benchmark Report:** [eval/results/RESULTS.md](eval/results/RESULTS.md)
 - ⚡ **Hardware Latency Benchmark:** [eval/results/latency_benchmark.json](eval/results/latency_benchmark.json)
 
