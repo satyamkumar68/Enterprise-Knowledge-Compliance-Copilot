@@ -48,29 +48,29 @@ graph TD
 ### Phase 0: Baseline Audit & State Documentation
 - [x] Run full test suite (46 unit tests passing).
 - [x] Verify local environment (PostgreSQL 16 on port 5432, Ollama on port 11434 with `qwen3:4b`, `nomic-embed-text`, `qwen2.5-coder:1.5b`).
-- [ ] Create `docs/CURRENT_STATE.md`: architecture as-is, test count, how to run, known gaps.
+- [x] Create `docs/CURRENT_STATE.md`: architecture as-is, test count, how to run, known gaps.
 
 ### Phase 1: Golden Evaluation Corpus & Dataset (P0)
-- [ ] Create `eval/corpus/` with standard enterprise compliance documents:
+- [x] Create `eval/corpus/` with standard enterprise compliance documents:
   - `data_retention_policy.md`
   - `incident_response_playbook.md`
   - `access_control_soc2.md`
   - `executive_compensation_restricted.md` (RBAC-restricted)
-- [ ] Create `eval/golden.jsonl` (60–80 rows) with schema:
+- [x] Create `eval/golden.jsonl` (68 rows) with schema:
   - `{id, question, expected_answer, source_doc, source_chunk_hint, answerable: bool, role_required, needs_review}`
-  - Includes ≥20 `answerable: false` (testing mathematical abstention).
-  - Includes ≥10 RBAC-restricted questions (testing permission boundaries).
-- [ ] Create `eval/seed_eval_corpus.py` to ingest and permission the corpus.
+  - Includes 21 `answerable: false` (testing mathematical abstention).
+  - Includes 12 RBAC-restricted questions (testing permission boundaries).
+- [x] Create `eval/seed_eval_corpus.py` to ingest and permission the corpus.
 
 ### Phase 2: Reproducible Evaluation Harness & Metrics (P0)
-- [ ] Build `eval/run_eval.py`:
+- [x] Build `eval/run_eval.py`:
   - Recall@k (k=3, 5, 10) & MRR across Lexical-only vs Vector-only vs Hybrid RRF.
   - Faithfulness / Groundedness score (verifying inline citations match retrieved text).
   - Abstention precision & recall on unanswerable test set.
   - RBAC leakage test (unauthorized users must retrieve 0 restricted chunks; leakage = 0.0%).
-  - Latency p50 / p95 and TTFT.
-- [ ] Write results to `eval/results/latest.json` and `eval/results/RESULTS.md`.
-- [ ] Add `make eval` / `scripts/eval.bat` one-command runner.
+  - Latency p50 / p95.
+- [x] Write results to `eval/results/latest.json` and `eval/results/RESULTS.md`.
+- [x] Add `make eval` / `scripts/eval.bat` one-command runner.
 
 ### Phase 3: Hardware-Grounded Latency & TTFT Benchmark (P0)
 - [ ] Build `eval/bench_ttft.py` to measure streaming Time-to-First-Token.
