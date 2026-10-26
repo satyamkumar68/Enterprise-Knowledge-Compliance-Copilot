@@ -14,12 +14,13 @@
 
 ---
 
-## 🎬 Live Demos & Technical Resources
+## 🚀 Interactive Demo & Technical Resources
 
-- 🖥️ **Live Web Demo:** *[Interactive Deployment Demo](http://localhost:8000)*
-- 📑 **2-Minute Live Demo Script:** [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)
+- 🖥️ **Interactive Web Application:** *[Local Deployment](http://localhost:8000)*
+- 📑 **2-Minute Live Demonstration Script:** [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md)
 - 📊 **Reproducible Benchmark Report:** [eval/results/RESULTS.md](eval/results/RESULTS.md)
 - ⚡ **Hardware Latency Benchmark:** [eval/results/latency_benchmark.json](eval/results/latency_benchmark.json)
+
 
 
 ---
@@ -251,7 +252,7 @@ We implement 4 defense layers: (1) Document text is strictly encapsulated within
 - [docs/DECISIONS.md](docs/DECISIONS.md) — Architectural Decision Records (ADRs) and trade-off rationales.
 - [docs/SECURITY.md](docs/SECURITY.md) — Threat model, RBAC proofs, CSRF, and prompt injection defenses.
 - [docs/DEPLOY.md](docs/DEPLOY.md) — Production deployment guide (Docker Compose, VPS, Caddy SSL, Cloud PaaS).
-- [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) — 2-minute live demo walkthrough script and verifiable resume bullets.
+- [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) — 2-minute live demo script and verifiable resume bullets.
 - [eval/results/RESULTS.md](eval/results/RESULTS.md) — Grounded 68-question benchmark evaluation results.
 
 ---

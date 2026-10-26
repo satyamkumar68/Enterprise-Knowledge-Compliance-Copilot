@@ -4,7 +4,7 @@ This document provides a concise, high-impact demonstration script for technical
 
 ---
 
-## 🎬 2-Minute Live Demo Script
+## 💻 2-Minute Live Demo Script
 
 **Target Audience:** Staff / Principal Engineers, Engineering Managers, Technical Recruiters.  
 **Goal:** Prove architecture depth, retrieval-time RBAC, sub-second streaming responsiveness, and hallucination prevention in under 120 seconds.
