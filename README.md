@@ -210,49 +210,12 @@ Detailed Architectural Decision Records (ADRs) are documented in [docs/DECISIONS
 2. **Context Window vs. Chunk Budget**: Top-$k$ is capped at 20 chunks to prevent context dilution and quadratic self-attention memory blowup on local LLMs.
 3. **Multi-Million Document Scale**: For deployments exceeding 500,000 document chunks, pgvector's HNSW index should be allocated dedicated memory (`maintenance_work_mem = 2GB`), or switched to IVFFlat with partitioned tables by tenant.
 
----
-
-## 💡 Technical Interview Q&A
-
-<details>
-<summary><b>1. Why did you choose PostgreSQL + pgvector instead of a dedicated vector database like Pinecone?</b></summary>
-<br>
-In enterprise compliance, permissions and documents change dynamically. With Pinecone or Milvus, documents and permissions live in a relational database while vectors live in an external cluster. Synchronizing them requires two-phase commits or eventual consistency daemons, creating windows where deleted documents or revoked permissions remain searchable. With PostgreSQL + pgvector, updating a document's permissions, chunk text, and embeddings happens in a <b>single ACID transaction</b>. Furthermore, we join permissions directly inside the similarity query, guaranteeing zero unauthorized data leakage.
-</details>
-
-<details>
-<summary><b>2. How does your retrieval-time RBAC guarantee zero leakage compared to application post-filtering?</b></summary>
-<br>
-Post-retrieval filtering retrieves top-<i>k</i> globally and filters unauthorized items in Python. If all top-5 candidates belong to a restricted document, an unauthorized employee receives 0 chunks (recall collapse), even though relevant permitted documents existed at ranks 6–10. In our architecture, the <code>JOIN document_permissions dp ON dp.document_id = d.id WHERE dp.principal_id = %s</code> clause is evaluated by PostgreSQL's query planner <i>before</i> ranking and limiting. Unauthorized records are never read into application memory.
-</details>
-
-<details>
-<summary><b>3. Why Reciprocal Rank Fusion (RRF) instead of a weighted sum of dense and sparse scores?</b></summary>
-<br>
-Dense cosine distances are bounded between 0 and 2, while BM25 (tsvector) scores are unbounded positive numbers proportional to term frequency and inverse document frequency. Combining them via <code>α · dense + (1 - α) · sparse</code> requires min-max normalization that varies query-to-query, and calibrating α overfits to training data. RRF is scale-invariant: it uses only ordinal ranks (<code>1 / (60 + rank)</code>), making it robust across diverse query styles without manual tuning.
-</details>
-
-<details>
-<summary><b>4. How did you reduce streaming Time-to-First-Token (TTFT) from 18.8s to 1.02s on CPU hardware?</b></summary>
-<br>
-Through a 4-part optimization pipeline: (1) Replacing synchronous blocking JSON calls with asynchronous Server-Sent Events (SSE), (2) Configuring Ollama memory keep-alive (<code>30m</code>) to eliminate cold model reload latency, (3) Implementing an in-memory thread-safe LRU embedding cache (0.004 ms hit latency), and (4) Emitting candidate source previews to the client before the first generated token completes.
-</details>
-
-<details>
-<summary><b>5. How do you defend against indirect prompt injection inside uploaded compliance documents?</b></summary>
-<br>
-We implement 4 defense layers: (1) Document text is strictly encapsulated within <code>&lt;context&gt;...&lt;/context&gt;</code> tags, (2) The system prompt explicitly instructs the model that context is untrusted data and never commands, (3) The output schema enforces strict JSON validation, and (4) We whitelist <code>source_ids</code> against the request's retrieved chunks—if an injected document tries to force a fake source ID or trigger unauthorized actions, the pipeline triggers mathematical abstention.
-</details>
-
----
-
 ## 📚 Technical Documentation Index
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Comprehensive technical diagrams, data flows, and latency budget.
 - [docs/DECISIONS.md](docs/DECISIONS.md) — Architectural Decision Records (ADRs) and trade-off rationales.
 - [docs/SECURITY.md](docs/SECURITY.md) — Threat model, RBAC proofs, CSRF, and prompt injection defenses.
 - [docs/DEPLOY.md](docs/DEPLOY.md) — Production deployment guide (Docker Compose, VPS, Caddy SSL, Cloud PaaS).
-- [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) — 2-minute live demo script and verifiable resume bullets.
 - [eval/results/RESULTS.md](eval/results/RESULTS.md) — Grounded 68-question benchmark evaluation results.
 
 ---
