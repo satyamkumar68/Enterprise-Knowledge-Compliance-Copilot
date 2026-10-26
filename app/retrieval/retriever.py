@@ -81,8 +81,9 @@ def retrieve_chunks(
     top_k: int = 5,
     max_distance: float | None = None,
     rewrite: bool | None = None,
+    search_mode: str = "hybrid",
 ) -> list[dict]:
-    """Retrieve chunks using hybrid vector similarity and full-text RRF search."""
+    """Retrieve chunks using hybrid vector similarity and full-text RRF search, or single mode."""
 
     total_start = time.perf_counter()
 
@@ -113,7 +114,7 @@ def retrieve_chunks(
         str(value) for value in query_vector
     ) + "]"
 
-    # Stage 2: Retrieve authorized chunks using hybrid RRF search.
+    # Stage 2: Retrieve authorized chunks using hybrid RRF search or single mode.
     connection_start = time.perf_counter()
 
     with get_connection() as conn:
@@ -125,40 +126,39 @@ def retrieve_chunks(
         with conn.cursor() as cur:
             stage_start = time.perf_counter()
 
-            hybrid_sql = """
-                WITH vector_matches AS (
+            if search_mode == "vector_only":
+                vector_sql = """
                     SELECT
-                        dc.id AS chunk_id,
                         dc.document_id,
                         dc.chunk_index,
                         dc.content,
                         dc.metadata,
                         dc.embedding <=> %s::vector AS distance,
-                        ROW_NUMBER() OVER (
-                            ORDER BY dc.embedding <=> %s::vector
-                        ) AS rank_vec
+                        (1.0 - (dc.embedding <=> %s::vector)) AS score
                     FROM document_chunks AS dc
                     JOIN documents AS d ON d.id = dc.document_id
                     JOIN document_permissions AS dp ON dp.document_id = d.id
                     WHERE dp.principal_id = %s
                       AND dp.permission = 'read'
                       AND d.status = 'indexed'
-                    LIMIT %s * 3
-                ),
-                text_matches AS (
+                    ORDER BY distance ASC
+                    LIMIT %s;
+                """
+                cur.execute(
+                    vector_sql,
+                    (vector_literal, vector_literal, principal_id, top_k),
+                )
+                rows = cur.fetchall()
+
+            elif search_mode == "keyword_only":
+                keyword_sql = """
                     SELECT
-                        dc.id AS chunk_id,
                         dc.document_id,
                         dc.chunk_index,
                         dc.content,
                         dc.metadata,
                         dc.embedding <=> %s::vector AS distance,
-                        ROW_NUMBER() OVER (
-                            ORDER BY ts_rank_cd(
-                                dc.tsv,
-                                plainto_tsquery('english', %s)
-                            ) DESC
-                        ) AS rank_text
+                        ts_rank_cd(dc.tsv, plainto_tsquery('english', %s)) AS score
                     FROM document_chunks AS dc
                     JOIN documents AS d ON d.id = dc.document_id
                     JOIN document_permissions AS dp ON dp.document_id = d.id
@@ -166,55 +166,113 @@ def retrieve_chunks(
                       AND dp.permission = 'read'
                       AND d.status = 'indexed'
                       AND dc.tsv @@ plainto_tsquery('english', %s)
-                    LIMIT %s * 3
-                ),
-                combined AS (
-                    SELECT
-                        COALESCE(vm.chunk_id, tm.chunk_id) AS chunk_id,
-                        COALESCE(vm.document_id, tm.document_id) AS document_id,
-                        COALESCE(vm.chunk_index, tm.chunk_index) AS chunk_index,
-                        COALESCE(vm.content, tm.content) AS content,
-                        COALESCE(vm.metadata, tm.metadata) AS metadata,
-                        COALESCE(vm.distance, tm.distance) AS distance,
-                        (
-                            COALESCE(1.0 / (60.0 + vm.rank_vec), 0.0) +
-                            COALESCE(1.0 / (60.0 + tm.rank_text), 0.0)
-                        ) AS rrf_score
-                    FROM vector_matches vm
-                    FULL OUTER JOIN text_matches tm ON tm.chunk_id = vm.chunk_id
+                    ORDER BY score DESC
+                    LIMIT %s;
+                """
+                cur.execute(
+                    keyword_sql,
+                    (
+                        vector_literal,
+                        search_query,
+                        principal_id,
+                        search_query,
+                        top_k,
+                    ),
                 )
-                SELECT
-                    document_id,
-                    chunk_index,
-                    content,
-                    metadata,
-                    distance,
-                    rrf_score
-                FROM combined
-                ORDER BY rrf_score DESC, distance ASC
-                LIMIT %s;
-            """
+                rows = cur.fetchall()
 
-            cur.execute(
-                hybrid_sql,
-                (
-                    vector_literal,
-                    vector_literal,
-                    principal_id,
-                    top_k,
-                    vector_literal,
-                    search_query,
-                    principal_id,
-                    search_query,
-                    top_k,
-                    top_k,
-                ),
-            )
+            else:
+                hybrid_sql = """
+                    WITH vector_matches AS (
+                        SELECT
+                            dc.id AS chunk_id,
+                            dc.document_id,
+                            dc.chunk_index,
+                            dc.content,
+                            dc.metadata,
+                            dc.embedding <=> %s::vector AS distance,
+                            ROW_NUMBER() OVER (
+                                ORDER BY dc.embedding <=> %s::vector
+                            ) AS rank_vec
+                        FROM document_chunks AS dc
+                        JOIN documents AS d ON d.id = dc.document_id
+                        JOIN document_permissions AS dp ON dp.document_id = d.id
+                        WHERE dp.principal_id = %s
+                          AND dp.permission = 'read'
+                          AND d.status = 'indexed'
+                        LIMIT %s * 3
+                    ),
+                    text_matches AS (
+                        SELECT
+                            dc.id AS chunk_id,
+                            dc.document_id,
+                            dc.chunk_index,
+                            dc.content,
+                            dc.metadata,
+                            dc.embedding <=> %s::vector AS distance,
+                            ROW_NUMBER() OVER (
+                                ORDER BY ts_rank_cd(
+                                    dc.tsv,
+                                    plainto_tsquery('english', %s)
+                                ) DESC
+                            ) AS rank_text
+                        FROM document_chunks AS dc
+                        JOIN documents AS d ON d.id = dc.document_id
+                        JOIN document_permissions AS dp ON dp.document_id = d.id
+                        WHERE dp.principal_id = %s
+                          AND dp.permission = 'read'
+                          AND d.status = 'indexed'
+                          AND dc.tsv @@ plainto_tsquery('english', %s)
+                        LIMIT %s * 3
+                    ),
+                    combined AS (
+                        SELECT
+                            COALESCE(vm.chunk_id, tm.chunk_id) AS chunk_id,
+                            COALESCE(vm.document_id, tm.document_id) AS document_id,
+                            COALESCE(vm.chunk_index, tm.chunk_index) AS chunk_index,
+                            COALESCE(vm.content, tm.content) AS content,
+                            COALESCE(vm.metadata, tm.metadata) AS metadata,
+                            COALESCE(vm.distance, tm.distance) AS distance,
+                            (
+                                COALESCE(1.0 / (60.0 + vm.rank_vec), 0.0) +
+                                COALESCE(1.0 / (60.0 + tm.rank_text), 0.0)
+                            ) AS rrf_score
+                        FROM vector_matches vm
+                        FULL OUTER JOIN text_matches tm ON tm.chunk_id = vm.chunk_id
+                    )
+                    SELECT
+                        document_id,
+                        chunk_index,
+                        content,
+                        metadata,
+                        distance,
+                        rrf_score
+                    FROM combined
+                    ORDER BY rrf_score DESC, distance ASC
+                    LIMIT %s;
+                """
 
-            rows = cur.fetchall()
+                cur.execute(
+                    hybrid_sql,
+                    (
+                        vector_literal,
+                        vector_literal,
+                        principal_id,
+                        top_k,
+                        vector_literal,
+                        search_query,
+                        principal_id,
+                        search_query,
+                        top_k,
+                        top_k,
+                    ),
+                )
+
+                rows = cur.fetchall()
 
             logger.debug(
-                "Authorized Hybrid SQL query + fetch: %.3fs (chunks=%d)",
+                "Authorized Retrieval (%s) SQL query + fetch: %.3fs (chunks=%d)",
+                search_mode,
                 time.perf_counter() - stage_start,
                 len(rows),
             )
