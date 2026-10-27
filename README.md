@@ -209,6 +209,8 @@ Detailed Architectural Decision Records (ADRs) are documented in [docs/DECISIONS
 2. **Context Window vs. Chunk Budget**: Top-$k$ is capped at 20 chunks to prevent context dilution and quadratic self-attention memory blowup on local LLMs.
 3. **Multi-Million Document Scale**: For deployments exceeding 500,000 document chunks, pgvector's HNSW index should be allocated dedicated memory (`maintenance_work_mem = 2GB`), or switched to IVFFlat with partitioned tables by tenant.
 
+---
+
 ## 📚 Technical Documentation Index
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Comprehensive technical diagrams, data flows, and latency budget.
